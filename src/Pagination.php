@@ -165,11 +165,16 @@ class Pagination implements PaginationInterface
 	public function getPrevious()
 	{
 		$page_number = $this->getCurrent();
+		if (!$this->isActive()):
+			return null;
+		endif;
 
 		return $page_number > $this->getFirst()
 		? $page_number - 1
 		: null;
 	}
+
+
 
 	/**
 	 * @inheritDoc
@@ -177,6 +182,10 @@ class Pagination implements PaginationInterface
 	public function getNext()
 	{
 		$page_number = $this->getCurrent();
+		if (!$this->isActive()):
+			return null;
+		endif;
+
 		return $page_number < $this->getLast()
 		? $page_number + 1
 		: null;
