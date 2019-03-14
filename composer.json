@@ -33,7 +33,8 @@
 
     "require-dev": {
         "php-coveralls/php-coveralls": "^2.0",
-        "phpunit/phpunit": "^5.7|^6.0|^7.0"
+        "phpunit/phpunit": "^5.7|^6.0|^7.0",
+		"guzzlehttp/psr7": "^1.5"
     },
     
     "scripts": {
