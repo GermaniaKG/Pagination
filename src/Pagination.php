@@ -132,13 +132,13 @@ class Pagination implements PaginationInterface
 	 */
 	public function setCurrent( $number )
 	{
+        $min_page_number = $this->getFirst();
+        $max_page_number = $this->getLast();
+
 		if (filter_var($number, FILTER_VALIDATE_INT) === false):
 	    	$msg = sprintf("Integer (%s to %s) eexpected", $min_page_number, $max_page_number);
 	    	throw new PaginationInvalidArgumentException($msg);
 		endif;
-
-        $min_page_number = $this->getFirst();
-        $max_page_number = $this->getLast();
 
         $filter_options = array("options" => [
         	"min_range" => $min_page_number, 
@@ -165,11 +165,16 @@ class Pagination implements PaginationInterface
 	public function getPrevious()
 	{
 		$page_number = $this->getCurrent();
+		if (!$this->isActive()):
+			return null;
+		endif;
 
 		return $page_number > $this->getFirst()
 		? $page_number - 1
 		: null;
 	}
+
+
 
 	/**
 	 * @inheritDoc
@@ -177,6 +182,10 @@ class Pagination implements PaginationInterface
 	public function getNext()
 	{
 		$page_number = $this->getCurrent();
+		if (!$this->isActive()):
+			return null;
+		endif;
+
 		return $page_number < $this->getLast()
 		? $page_number + 1
 		: null;
