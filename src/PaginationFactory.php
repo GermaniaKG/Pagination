@@ -72,7 +72,10 @@ class PaginationFactory
 	 */
 	protected function countItems( $items )
 	{
-		if ($items instanceOf \Countable):
+		if (is_array($items)):
+			return count($items);
+
+		elseif ($items instanceOf \Countable):
 			return count($items);
 
 		elseif ($items instanceOf \Traversable):
