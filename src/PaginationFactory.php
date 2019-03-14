@@ -82,7 +82,7 @@ class PaginationFactory
 			return iterator_count($items);
 
 		elseif (is_int($items)):
-			return items;
+			return $items;
 
 		else:
 			throw new PaginationInvalidArgumentException("Countable, Traversable or integer expected");
