@@ -1,0 +1,46 @@
+{
+	"name": "germania-kg/pagination",
+
+	"description": "Paginate your Traversables",
+
+	"keywords": ["pagination", "JsonAPI", "navigation"],
+
+	"license": "MIT",
+
+	"authors": [
+		{
+			"name":  "Carsten Witt",
+			"email": "carstenwitt@germania-kg.de",
+			"role":  "Developer"
+		}
+	],
+
+	"autoload": {
+		"psr-4": {
+			"Germania\\Pagination\\": "src"
+		}
+	},
+
+  	"autoload-dev": {
+  	  	"psr-4": { "tests\\": "tests/src" }
+  	},
+
+
+	"require": {
+		"php": "^7.0",
+		"psr/http-message": "^1.0"
+	},
+
+    "require-dev": {
+        "php-coveralls/php-coveralls": "^2.0",
+        "phpunit/phpunit": "^5.7|^6.0|^7.0"
+    },
+    
+    "scripts": {
+          "phpunit": "phpunit --colors=auto",
+          "test": [
+              "@phpunit"
+          ]
+    }
+
+}
