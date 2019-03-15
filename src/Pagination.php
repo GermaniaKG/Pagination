@@ -136,7 +136,7 @@ class Pagination implements PaginationInterface
         $max_page_number = $this->getLast();
 
 		if (filter_var($number, FILTER_VALIDATE_INT) === false):
-	    	$msg = sprintf("Integer (%s to %s) eexpected", $min_page_number, $max_page_number);
+	    	$msg = sprintf("Integer (%s to %s) expected", $min_page_number, $max_page_number);
 	    	throw new PaginationInvalidArgumentException($msg);
 		endif;
 
@@ -146,7 +146,7 @@ class Pagination implements PaginationInterface
     	]);
 
 		if (filter_var($number, FILTER_VALIDATE_INT, $filter_options) === false):
-	    	$msg = sprintf("Invalid Page number", $min_page_number, $max_page_number);
+	    	$msg = sprintf("Invalid Page number (allowed: %s to %s)", $min_page_number, $max_page_number);
 	    	throw new PaginationRangeException($msg, 400);
 		endif;
 
