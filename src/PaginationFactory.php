@@ -49,11 +49,11 @@ class PaginationFactory
             $pagination->setCurrent( $pagination_data );
 
         elseif (is_array($pagination_data)):
-            $pagination->setCurrent( $pagination_data['number'] ?? 0);
-
             if (!empty($pagination_data['size'])):
             	$pagination->setPageSize( $pagination_data['size'] );
             endif;
+
+            $pagination->setCurrent( $pagination_data['number'] ?? 0);
 
         else:
         	throw new PaginationInvalidArgumentException("Integer or Array expected");
