@@ -23,7 +23,7 @@ $ composer require germania-kg/pagination
 ## Overview
 
 **Pagination:**
-Page numbering made easy! Supports *current,next, previous, first* and *last* page numbers as well as *number of pages* and customizable *page sizes*.
+Page numbering made easy! Supports *current, next, previous, first* and *last* page numbers as well as *number of pages* and customizable *page sizes*.
 
 **PaginationFactory:**
 Callable class for creating a *Pagination* instance. Works great with `$_GET['page']`
@@ -46,7 +46,7 @@ Just pass the number of items to paginate. The *Pagination* class will calculate
 <?hpp
 use Germania\Pagination\Pagination;
 
-$items_count = 100 // count( $things ) or integer;
+$items_count = 100; // count( $things ) or integer;
 $pagination = new Pagination( $items_count );
 
 $pagination->getPagesCount(); // 4, with 25 items each
@@ -58,7 +58,9 @@ $pagination->getLast(); // 3
 
 #### Pagination status
 
-Right after instantiation, no page was picked by the user. Hence, the *Pagination* is then considered *inactive*. It requires a *setCurrent* call to become *active*.
+Right after instantiation, no page was picked by the user. Hence, the *Pagination* is then considered *inactive*. 
+
+Please note that the current page also may be `int(0)` – the first page. This is why we have to check against `null`. The *isActive* method is a convenient alias for `$p->getCurrent() === null` . 
 
 ```php
 $pagination->isActive();    // FALSE
@@ -68,7 +70,7 @@ $pagination->getPrevious(); // null
 $pagination->getNext();     // null
 ```
 
-
+It first needs a *setCurrent* call to become *active*:
 
 #### Setting the current page
 
@@ -139,18 +141,20 @@ $factory = new PaginationFactory( 25 );
 $items_count = 65;
 $choose_page = 2;
 
+// Create Pagination instance:
 $pagination = $factory( $items_count, $choose_page );
-
-// Set page and size; both elements are optional.
-$pagination = $factory( $items_count, [
-	'number' => 2, // default: 0
-  'size'   => 20
-]);
 ```
 
 **Creation from array** is useful when working with query parameters such as `$_GET['page']`
 
 ```php
+// Both elements are optional.
+$pagination = $factory( $items_count, [
+	'number' => 2, // default: 0
+  'size'   => 20
+]);
+
+// User Input
 $pagination = $factory( $items_count, $_GET['page'] ?? [] );
 ```
 
@@ -159,7 +163,7 @@ $pagination = $factory( $items_count, $_GET['page'] ?? [] );
 
 ### The PaginationIterator
 
-Limits any  `\Traversable` iterator to the current page size, sepending on the *pagination* status. The **PaginationIterator** constructor accepts your iterator and your *pagination* instance. It is also `\Countable`, so you can, … er …, count on the numbers of items shown on the current page. The pun was not intended.
+Limits any  `\Traversable` iterator to the current page size, depending on the *pagination* status. The **PaginationIterator** constructor accepts your *iterator* and your *pagination* instance. It is also `\Countable` to count the numbers of items shown on the current page.
 
 ```php
 <?php
@@ -182,17 +186,19 @@ endforeach;
 
 #### Which Iterator is used?
 
-Depending on the *pagination* status, the in-fact iterator used in the *foreach* loop is either `\LimitIterator` or the `MyHugeIterator` instance itself, when pagination is not active:
+Depending on the *pagination* status, *PaginationIterator's* inner iterator used in the *foreach* loop is either `\LimitIterator` or the `MyHugeIterator` instance itself, when pagination is not active:
 
 ```php
 // this time, we do not pick a page number!
 $thousand_items = ...
 $pagination = new Pagination( count($thousand_items) );
+$pagination->isActive(); // null
+
 $collection = new MyHugeIterator( $thousand_items );
 
 $paginated_collection = new PaginationIterator( $collection, $pagination );
-
 $iterator = $paginated_collection->getIterator();
+
 get_class( $iterator ); // MyHugeIterator instance
 ```
 
